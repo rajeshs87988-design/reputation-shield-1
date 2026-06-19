@@ -6,85 +6,87 @@
     <title>Reputation Shield PRO | Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { 
             background: #000; 
-            background-image: radial-gradient(circle at 0% 0%, #111827 0%, #000000 50%);
+            background-image: radial-gradient(circle at 0% 0%, #111827 0%, #000000 60%);
             min-height: 100vh; 
             color: white; 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            padding: 20px;
+            padding: 24px 16px;
         }
         
         .glass { 
             background: rgba(255, 255, 255, 0.03); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(30px); 
+            -webkit-backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 28px; 
+            border-radius: 24px; 
             padding: 24px; 
         }
 
-        .text-glow { text-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+        .text-glow { text-shadow: 0 0 30px rgba(59, 130, 246, 0.45); }
 
-        /* Hide Scrollbars but keep scrolling */
         #feedbackList {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         #feedbackList::-webkit-scrollbar { display: none; }
 
-        canvas { filter: drop-shadow(0px 10px 15px rgba(59, 130, 246, 0.1)); }
+        canvas { filter: drop-shadow(0px 12px 20px rgba(59, 130, 246, 0.15)); }
 
         @media (max-width: 640px) {
-            body { padding: 16px; }
-            .glass { padding: 20px; }
-            h1 { font-size: 1.875rem !important; }
+            body { padding: 16px 12px; }
+            .glass { padding: 20px; border-radius: 20px; }
         }
     </style>
 </head>
 <body class="antialiased">
     <div class="max-w-4xl mx-auto">
         
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <!-- Header Section -->
+        <div class="flex justify-between items-center gap-4 mb-8">
             <div>
-                <h1 class="text-3xl font-extrabold tracking-tighter text-glow">Reputation Shield <span class="text-blue-500">PRO</span></h1>
-                <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mt-1">Live Intelligence Engine</p>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tighter text-glow">Reputation Shield <span class="text-blue-500">PRO</span></h1>
+                <p class="text-gray-500 text-[10px] sm:text-xs font-bold uppercase tracking-widest mt-1">Live Intelligence Engine</p>
             </div>
-            <div class="bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-1.5 flex items-center gap-2">
+            <div class="bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-1.5 flex items-center gap-2 shrink-0">
                 <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-[0_0_8px_#3b82f6]"></span>
-                <span class="text-[10px] font-black tracking-widest text-blue-400">ENCRYPTED LIVE</span>
+                <span class="text-[9px] sm:text-[10px] font-black tracking-widest text-blue-400">ENCRYPTED LIVE</span>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <div class="glass flex flex-col items-center justify-center py-8">
-                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Total Clicks</p>
-                <div id="totalCount" class="text-5xl font-black tracking-tighter italic">0</div>
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
+            <div class="glass flex flex-col items-center justify-center py-6 sm:py-8 text-center">
+                <p class="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Clicks</p>
+                <div id="totalCount" class="text-3xl sm:text-5xl font-black tracking-tighter italic">0</div>
             </div>
-            <div class="glass flex flex-col items-center justify-center py-8 border-b-2 border-amber-500/30">
-                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Filtered</p>
-                <div id="filteredCount" class="text-5xl font-black tracking-tighter italic text-amber-500">0</div>
+            <div class="glass flex flex-col items-center justify-center py-6 sm:py-8 text-center border-b-2 border-amber-500/30">
+                <p class="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Filtered</p>
+                <div id="filteredCount" class="text-3xl sm:text-5xl font-black tracking-tighter italic text-amber-500">0</div>
             </div>
-            <div class="glass flex flex-col items-center justify-center py-8 border-b-2 border-emerald-500/30">
-                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Health</p>
-                <div id="healthScoreText" class="text-5xl font-black tracking-tighter italic text-emerald-400">100%</div>
+            <div class="glass flex flex-col items-center justify-center py-6 sm:py-8 text-center border-b-2 border-emerald-500/30">
+                <p class="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Health</p>
+                <div id="healthScoreText" class="text-3xl sm:text-5xl font-black tracking-tighter italic text-emerald-400">100%</div>
             </div>
         </div>
 
+        <!-- Chart Card -->
         <div class="glass mb-6">
-            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+            <h3 class="text-[11px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
                 <span class="w-1 h-3 bg-blue-600 rounded-full"></span> Engagement Trends
             </h3>
-            <div class="h-48 sm:h-64"><canvas id="reputationChart"></canvas></div>
+            <div class="h-44 sm:h-60"><canvas id="reputationChart"></canvas></div>
         </div>
 
+        <!-- Live Feed Card -->
         <div class="glass">
-            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+            <h3 class="text-[11px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
                 <span class="w-1 h-3 bg-amber-600 rounded-full"></span> Live Feedback Feed
             </h3>
-            <div id="feedbackList" class="space-y-4 max-h-[400px] overflow-y-auto"></div>
+            <div id="feedbackList" class="space-y-4 max-h-[450px] overflow-y-auto pr-1"></div>
         </div>
     </div>
 
@@ -102,7 +104,6 @@
                 const list = document.getElementById('feedbackList');
                 list.innerHTML = '';
 
-                // Chronological processing loop
                 rows.forEach(row => {
                     const stars = parseInt(row.rating) || 0;
                     const timestamp = new Date(row.timestamp);
@@ -113,17 +114,18 @@
                     if(stars < 4) filtered++;
                     daily[dateFormatted] = (daily[dateFormatted] || 0) + 1;
 
+                    // Mobile Optimized Text Layout: Bigger text and crisp spacing
                     const item = document.createElement('div');
-                    item.className = "p-5 bg-white/[0.02] rounded-3xl border border-white/5";
+                    item.className = "p-5 bg-white/[0.02] rounded-2xl border border-white/5 flex flex-col gap-2";
                     item.innerHTML = `
-                        <div class='flex justify-between items-start mb-3'>
-                            <div>
-                                <span class='text-[10px] font-bold text-blue-500 uppercase block tracking-widest'>${dateFormatted}</span>
-                                <span class='text-[9px] text-gray-600 font-mono uppercase'>Time: ${timeFormatted}</span>
+                        <div class='flex justify-between items-center'>
+                            <div class='flex items-center gap-3'>
+                                <span class='text-sm font-bold text-blue-500 uppercase tracking-wider'>${dateFormatted}</span>
+                                <span class='text-xs text-gray-500 font-semibold'>${timeFormatted}</span>
                             </div>
-                            <span class='text-yellow-500 text-[10px] tracking-[3px]'>${"★".repeat(stars)}</span>
+                            <span class='text-yellow-500 text-xs tracking-[2px] font-bold'>${"★".repeat(stars)}</span>
                         </div>
-                        <div class='text-gray-300 text-sm font-medium leading-relaxed'>${row.feedback}</div>
+                        <div class='text-gray-200 text-[15px] font-medium leading-relaxed mt-1 break-words'>${row.feedback}</div>
                     `;
                     list.prepend(item);
                 });
@@ -136,9 +138,8 @@
                 const canvasElement = document.getElementById('reputationChart');
                 const ctx = canvasElement.getContext('2d');
                 
-                // Safe gradient rendering solution
-                const gradient = ctx.createLinearGradient(0, 0, 0, canvasElement.clientHeight || 250);
-                gradient.addColorStop(0, 'rgba(59, 130, 246, 0.25)');
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvasElement.clientHeight || 200);
+                gradient.addColorStop(0, 'rgba(59, 130, 246, 0.28)');
                 gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
 
                 if(myChart) myChart.destroy();
@@ -151,10 +152,12 @@
                             data: Object.values(daily), 
                             borderColor: '#3b82f6', 
                             borderWidth: 4,
-                            pointRadius: 2,
+                            pointRadius: 4,
                             pointBackgroundColor: '#3b82f6',
-                            pointHoverRadius: 6,
-                            tension: 0.45, 
+                            pointBorderColor: '#000',
+                            pointBorderWidth: 2,
+                            pointHoverRadius: 7,
+                            tension: 0.4, 
                             fill: true, 
                             backgroundColor: gradient
                         }] 
@@ -165,13 +168,11 @@
                         plugins: { legend: { display: false } }, 
                         scales: { 
                             y: { 
-                                display: true,
-                                grid: { color: 'rgba(255,255,255,0.03)' },
-                                ticks: { color: '#4b5563', font: { size: 9 } }
+                                display: false // Hidden to match image_2ce3bf.png perfectly
                             }, 
                             x: { 
                                 grid: { display: false }, 
-                                ticks: { color: '#4b5563', font: { size: 9, weight: 'bold' } } 
+                                ticks: { color: '#4b5563', font: { size: 10, weight: 'bold' } } 
                             } 
                         } 
                     } 
