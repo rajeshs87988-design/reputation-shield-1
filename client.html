@@ -84,8 +84,7 @@
             <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
                 <span class="w-1 h-3 bg-amber-600 rounded-full"></span> Live Feedback Feed
             </h3>
-            <div id="feedbackList" class="space-y-4 max-h-[400px] overflow-y-auto">
-                </div>
+            <div id="feedbackList" class="space-y-4 max-h-[400px] overflow-y-auto"></div>
         </div>
     </div>
 
@@ -103,6 +102,7 @@
                 const list = document.getElementById('feedbackList');
                 list.innerHTML = '';
 
+                // Chronological processing loop
                 rows.forEach(row => {
                     const stars = parseInt(row.rating) || 0;
                     const timestamp = new Date(row.timestamp);
@@ -132,8 +132,17 @@
                 document.getElementById('filteredCount').innerText = filtered;
                 document.getElementById('healthScoreText').innerText = rows.length > 0 ? Math.round((starsTotal/(rows.length*5))*100) + "%" : "100%";
 
-                const ctx = document.getElementById('reputationChart').getContext('2d');
+                // Chart Rendering Setup
+                const canvasElement = document.getElementById('reputationChart');
+                const ctx = canvasElement.getContext('2d');
+                
+                // Safe gradient rendering solution
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvasElement.clientHeight || 250);
+                gradient.addColorStop(0, 'rgba(59, 130, 246, 0.25)');
+                gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
                 if(myChart) myChart.destroy();
+                
                 myChart = new Chart(ctx, { 
                     type: 'line', 
                     data: { 
@@ -142,17 +151,12 @@
                             data: Object.values(daily), 
                             borderColor: '#3b82f6', 
                             borderWidth: 4,
-                            pointRadius: 0,
+                            pointRadius: 2,
+                            pointBackgroundColor: '#3b82f6',
                             pointHoverRadius: 6,
                             tension: 0.45, 
                             fill: true, 
-                            backgroundColor: (context) => {
-                                const ctx = context.chart.ctx;
-                                const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-                                gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
-                                gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
-                                return gradient;
-                            }
+                            backgroundColor: gradient
                         }] 
                     }, 
                     options: { 
@@ -160,8 +164,15 @@
                         maintainAspectRatio: false, 
                         plugins: { legend: { display: false } }, 
                         scales: { 
-                            y: { display: false }, 
-                            x: { grid: { display: false }, ticks: { color: '#4b5563', font: { size: 9, weight: 'bold' } } } 
+                            y: { 
+                                display: true,
+                                grid: { color: 'rgba(255,255,255,0.03)' },
+                                ticks: { color: '#4b5563', font: { size: 9 } }
+                            }, 
+                            x: { 
+                                grid: { display: false }, 
+                                ticks: { color: '#4b5563', font: { size: 9, weight: 'bold' } } 
+                            } 
                         } 
                     } 
                 });
